@@ -2,11 +2,38 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
-
+import threading
 class SauceDemoTest:
     def __init__(self):
         self.driver = webdriver.Chrome()
+    
+    
+    def performance_testing(self, num_users=15):
+        def user_simulation():
+            driver = webdriver.Chrome()
+            driver.get("https://www.saucedemo.com/")
+            time.sleep(1)
+            username_field = driver.find_element(By.ID, "user-name")
+            password_field = driver.find_element(By.ID, "password")
+            login_button = driver.find_element(By.ID, "login-button")
+            username_field.send_keys("standard_user")
+            password_field.send_keys("secret_sauce")
+            login_button.click()
+            time.sleep(2)
+            driver.quit()
         
+        threads = []
+        for _ in range(num_users):
+            thread = threading.Thread(target=user_simulation)
+            threads.append(thread)
+            thread.start()
+        
+        for thread in threads:
+            thread.join()
+        
+        print(f"Performance test completed with {num_users} users logging in simultaneously.")
+        
+            
     def boundary_login_testing(self):
         self.driver.get("https://www.saucedemo.com/")
         self.driver.maximize_window()
@@ -51,7 +78,7 @@ class SauceDemoTest:
         login_button.click()
         
         time.sleep(2)
-        
+    
     def boundary_checkout_testing(self):
         self.driver.get("https://www.saucedemo.com/checkout-step-one.html")
         time.sleep(2)
@@ -208,13 +235,12 @@ class SauceDemoTest:
             assert button.is_displayed() and button.is_enabled(), f"Button {button.text} is not usable."
         print("All buttons are accessible and usable.")
     
-
-    
     def close(self):
         self.driver.quit()
 
 if __name__ == "__main__":
     test = SauceDemoTest()
+
     test.boundary_login_testing()
     
     test.login("standard_user", "secret_sauce")
@@ -232,4 +258,5 @@ if __name__ == "__main__":
     test.test_social_networks_footer()
     test.usability_testing()
     
+    test.performance_testing()
     test.close()
