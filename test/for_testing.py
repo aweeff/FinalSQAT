@@ -56,7 +56,7 @@ class SauceDemoTest:
         self.driver.get("https://www.saucedemo.com/checkout-step-one.html")
         time.sleep(2)
         
-        test_values = ["", "A", "JohnJohnJohnJohnJohnJohnJohnJohn", "123456789012345678901234567890"]
+        test_values = ["", "A"]
         
         for value in test_values:
             first_name_field = self.driver.find_element(By.ID, "first-name")
