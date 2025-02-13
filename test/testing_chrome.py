@@ -256,6 +256,8 @@ if __name__ == "__main__":
     
     test.usability_test_product_sort_container()
     test.test_social_networks_footer()
+    
+    test.performance_testing()
     test.usability_testing()
     
     test.performance_testing()
