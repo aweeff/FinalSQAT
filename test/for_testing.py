@@ -215,7 +215,7 @@ class SauceDemoTest:
 
 if __name__ == "__main__":
     test = SauceDemoTest()
-    test.boundary_value_testing()
+    test.boundary_login_testing()
     
     test.login("standard_user", "secret_sauce")
     
